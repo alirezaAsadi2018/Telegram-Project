@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="535.0" prefWidth="318.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.telegram.controllers.ChatController">
+   <children>
+      <Label style="-fx-background-radius: 40; -fx-background-color: #0088CC;" text="  " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" style="-fx-background-radius: 40 40 0 0; -fx-background-color: white;" text="Telegram" textAlignment="CENTER">
+               <font>
+                  <Font name="Times New Roman" size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="chatInfoLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="100.0" style="-fx-background-color: green;" text="chating with: " textAlignment="CENTER">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <ListView fx:id="messageList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent;">
+                     <VBox.margin>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </ListView>
+                  <JFXTextField fx:id="textEntered" labelFloat="true" promptText="enter text">
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <HBox alignment="CENTER_LEFT" maxWidth="500.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#sendText" text="sendText" />
+                        <Button mnemonicParsing="false" onAction="#chooseFile" text="choose file" />
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#sendChosenFile" text="sendChosenFile" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="25.0" right="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#goBack" text="back" />
+                  <Label fx:id="directory" maxWidth="200.0" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

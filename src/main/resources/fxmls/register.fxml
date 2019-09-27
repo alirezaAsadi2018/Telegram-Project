@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.telegram.controllers.RegisterController">
+   <children>
+      <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" style="-fx-background-radius: 50 0 50 0; -fx-background-color: #C0C0C0;" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="126.0" layoutY="9.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox>
+               <children>
+                  <JFXButton fx:id="firstPageBtn" buttonType="RAISED" onAction="#goToFirstPage" opacity="0.3" ripplerFill="BLACK" text="Sign In">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="registerPageBtn" buttonType="RAISED" layoutX="10.0" layoutY="10.0" ripplerFill="BLACK" text="Sign Up" textFill="#0088cc" underline="true">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <ImageView fitHeight="160.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="/icons/loginLogoNoBorder.png" />
+               </image></ImageView>
+            <VBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <JFXTextField fx:id="username" labelFloat="true" promptText="username" />
+                  <JFXPasswordField fx:id="password" labelFloat="true" promptText="password" />
+                  <JFXTextField fx:id="firstname" promptText="firstname" />
+                  <JFXTextField fx:id="lastname" layoutX="10.0" layoutY="101.0" promptText="lastname" />
+                  <JFXTextField fx:id="numberId" labelFloat="true" promptText="numberId" />
+               </children>
+            </VBox>
+            <JFXButton buttonType="RAISED" onAction="#register" style="-fx-background-color: #0088CC; -fx-background-radius: 20;" text="register" />
+            <Label fx:id="errorText" alignment="CENTER" text="enter sth unique" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>
