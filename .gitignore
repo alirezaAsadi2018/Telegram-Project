@@ -97,6 +97,7 @@ modules.xml
 
 # Log file
 *.log
+logs/
 
 # BlueJ files
 *.ctxt
