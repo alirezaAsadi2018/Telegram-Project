@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -31,7 +31,7 @@ public class ChatController implements SharedDataExchanger {
     @FXML
     private Label directory;
 
-    private Desktop desktop = Desktop.getDesktop();
+    private final Desktop desktop = Desktop.getDesktop();
     private File chosenFile;
     private ObservableList<MessageController> observableList;
     private static String destinationId;

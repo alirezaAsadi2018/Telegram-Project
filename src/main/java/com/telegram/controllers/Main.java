@@ -39,7 +39,9 @@ public class Main extends Application implements Initializable {// uses absolute
     }
 
     public void loadScene(FxmlNames name, String title, double width, double height, Object... sharedData) {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxmls/" + name.toString() + ".fxml"));
+        String fxmlResourcePath = "/fxmls/" + name.toString() + ".fxml";
+        URL fxmlUrl = Main.this.getClass().getResource(fxmlResourcePath);
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
         try {
             Parent root = fxmlLoader.load();
             SharedDataExchanger dataExchanger = fxmlLoader.getController();
