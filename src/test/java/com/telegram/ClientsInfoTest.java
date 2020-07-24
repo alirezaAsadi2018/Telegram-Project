@@ -1,7 +1,7 @@
 package com.telegram;
 
 
-import com.telegram.data.ClientsInfo;
+import com.telegram.database.ClientsInfo;
 import com.telegram.utility.Client;
 import com.telegram.utility.User;
 import org.junit.Test;

@@ -1,6 +1,8 @@
 package com.telegram.client;
 
 
+import com.telegram.utility.Message;
+import com.telegram.utility.Query;
 import com.telegram.utility.*;
 
 import java.io.File;

@@ -34,15 +34,19 @@ public class RegisterController implements SharedDataExchanger {
 
 
     public void register(ActionEvent actionEvent) {
+        System.out.println("clicked");
+        registerPageBtn.setDisable(true);
         if (textFieldValidation.checkNullAndNonEmpty(username.getText())
                 || textFieldValidation.checkNullAndNonEmpty(password.getText())
                 || textFieldValidation.checkNullAndNonEmpty(firstname.getText())
                 || textFieldValidation.checkNullAndNonEmpty(lastname.getText())
                 || textFieldValidation.checkNullAndNonEmpty(numberId.getText())) {
             errorText.setText("enter at least a letter!");
+            registerPageBtn.setDisable(false);
             return;
         }
-        User user = new User(firstname.getText(), lastname.getText(), username.getText(), password.getText(), false, numberId.getText());
+        User user = new User(firstname.getText(), lastname.getText(), username.getText(),
+                password.getText(), false, numberId.getText());
         Client client;
         try {
             client = new Client(user, false, null, null);
@@ -52,6 +56,7 @@ public class RegisterController implements SharedDataExchanger {
             ClientRunner.setCachedRequests(user, new RegisterQuery(user));
             Alert alert = new Alert(Alert.AlertType.WARNING, "server is not connected!!");
             alert.show();
+            registerPageBtn.setDisable(false);
             return;
         }
         Object lock = new Object();
@@ -72,6 +77,7 @@ public class RegisterController implements SharedDataExchanger {
             Main.getInstance().loadScene(FxmlNames.firstPage, "telegram");
         }
         client.setStatus(ClientState.closedSocket);
+        registerPageBtn.setDisable(false);
     }
 
     @Override

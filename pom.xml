@@ -18,6 +18,7 @@
         <junit.verswion>4.13</junit.verswion>
         <jfoenix.version>9.0.10</jfoenix.version>
         <javafx.version>15-ea+7</javafx.version>
+        <typesafe.version>1.4.0</typesafe.version>
         <apache.maven.plugins.version>3.8.1</apache.maven.plugins.version>
         <javafx.maven.plugin.version>0.0.4</javafx.maven.plugin.version>
     </properties>
@@ -45,6 +46,11 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
             <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe.version}</version>
         </dependency>
     </dependencies>
 

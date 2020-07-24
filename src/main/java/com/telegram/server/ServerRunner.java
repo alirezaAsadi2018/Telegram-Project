@@ -1,6 +1,12 @@
 package com.telegram.server;
 
-import com.telegram.data.ClientsInfo;
+import com.telegram.database.ClientsInfo;
+import com.telegram.database.dao.UserDao;
+import com.telegram.database.dao.UserFileDaoImpl;
+import com.telegram.database.dao.MessageDao;
+import com.telegram.database.dao.MessageFileDaoImpl;
+import com.telegram.utility.Message;
+import com.telegram.utility.Query;
 import com.telegram.utility.*;
 import com.telegram.utility.exception.NoSuchClientInServerMapException;
 
@@ -32,12 +38,9 @@ public class ServerRunner {
     }
 
     public void startServer() {
-        ClientsInfo.getInstance().readClientsMapFromFile();
-        ClientsInfo.getInstance().readContactsMapFromFile();
-        ClientsInfo.getInstance().readCachedMessagesMapFromFile();
         VideoServer videoServer = new VideoServer();
         videoServer.start();
-        try (ServerSocket serverSocket = new ServerSocket(Integer.valueOf(primaryServerPort))) {
+        try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(primaryServerPort))) {
             while (true) {
                 Socket socket = serverSocket.accept();
                 ClientChores task = new ClientChores(socket);
@@ -51,7 +54,7 @@ public class ServerRunner {
     private class VideoServer extends Thread {
         @Override
         public void run() {
-            try (ServerSocket serverSocket = new ServerSocket(Integer.valueOf(videoServerPort))) {
+            try (ServerSocket serverSocket = new ServerSocket(Integer.parseInt(videoServerPort))) {
                 while (true) {
                     Socket videoSocket = serverSocket.accept();// video socket
                     System.out.println("video socket connected");
@@ -68,6 +71,12 @@ public class ServerRunner {
 
     public static void main(String[] args) {
         ServerRunner serverRunner = new ServerRunner("localhost", "78", "4050");
+        UserDao userDao = new UserFileDaoImpl();
+        MessageDao messageDao = new MessageFileDaoImpl();
+        ClientsInfo.getInstance().setUserDao(userDao);
+        ClientsInfo.getInstance().setMessageDao(messageDao);
+        ClientsInfo.getInstance().readAllUsers();
+        ClientsInfo.getInstance().readAllUnsentMessages();
         serverRunner.startServer();
     }
 }
@@ -102,9 +111,9 @@ class VideoDownloadRunner extends Thread {
             if (query instanceof GetCachedMessagesQuery) {
                 System.out.println("GetCachedMessagesQuery received");
                 GetCachedMessagesQuery cachedMessagesQuery = (GetCachedMessagesQuery) query;
-                if (ClientsInfo.getInstance().getCachedMessages(cachedMessagesQuery.getUser()) != null) {
+                if (ClientsInfo.getInstance().getUnsentMessages(cachedMessagesQuery.getUser()) != null) {
                     System.out.println("there is data in map");
-                    Message[] messages = ClientsInfo.getInstance().getCachedMessages(cachedMessagesQuery.getUser());
+                    Message[] messages = ClientsInfo.getInstance().getUnsentMessages(cachedMessagesQuery.getUser());
                     output.reset();
                     synchronized (output) {
                         output.writeObject(messages);
@@ -168,13 +177,13 @@ class VideoDownloadRunner extends Thread {
             System.err.println("finally");
             System.err.println("reading server finished");
             if(query instanceof GetCachedMessagesQuery){
-                ClientsInfo.getInstance().removeCachedMessages(query.getUser());
+                ClientsInfo.getInstance().removeUnsentMessages(query.getUser());
             }
             if (query instanceof FileMessage) {
                 FileMessage fileMessage = (FileMessage) query;
                 System.err.println(ClientsInfo.getInstance().findClient(fileMessage.getDestinationId()).get());
                 if (ClientsInfo.getInstance().findClient(fileMessage.getDestinationId()).isPresent() && !ClientsInfo.getInstance().findClient(fileMessage.getDestinationId()).get().getConnected())
-                    ClientsInfo.getInstance().addCachedMessage(ClientsInfo.getInstance().findClient(fileMessage.getDestinationId()).get(), fileMessage);
+                    ClientsInfo.getInstance().addUnsentMessage(ClientsInfo.getInstance().findClient(fileMessage.getDestinationId()).get(), fileMessage);
             }
             try {
                 if (output != null)
@@ -316,7 +325,7 @@ class ClientChores implements Runnable {
         try {
             primaryOutput.reset();
             synchronized (client.getOutput()) {
-                Map<String, User> existingUsersExceptMe = new ConcurrentHashMap<>(ClientsInfo.clientsData);
+                Map<String, User> existingUsersExceptMe = new ConcurrentHashMap<>(ClientsInfo.clients);
                 existingUsersExceptMe.remove(getUsersListQuery.getUser().getPhone_id());
                 primaryOutput.writeObject(new GetUsersListAnswer(existingUsersExceptMe));
             }
@@ -341,7 +350,7 @@ class ClientChores implements Runnable {
                 throw new NoSuchClientInServerMapException("NoSuchClient In Server map");
             if (!destinationUser.getConnected()) {
                 System.out.println("destination is not connected");
-                ClientsInfo.getInstance().addCachedMessage(destinationUser, messageQuery);
+                ClientsInfo.getInstance().addUnsentMessage(destinationUser, messageQuery);
             } else {
                 System.out.println("destination is connected.. I'm on my way sending message!");
                 final Client destinationClient = (Client) destinationUser;// destinationUser is definitely a client because it is online

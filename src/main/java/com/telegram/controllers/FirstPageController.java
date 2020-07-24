@@ -12,10 +12,13 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.concurrent.Exchanger;
 
 
 public class FirstPageController implements SharedDataExchanger {
+    private String serverIp = "localhost";
+    private String serverPort = "78";
     @FXML
     private JFXButton registerPageBtn;
     @FXML
@@ -42,10 +45,19 @@ public class FirstPageController implements SharedDataExchanger {
         }
         User user = new User(null, null, username.getText(), password.getText(), false, numberId.getText());
         Client client;
-        try {
-            client = new Client(user, false, null, null);
-        } catch (IOException e) {
-            System.out.println("in signIn while creating a socket: " + e.getMessage());
+        if(isServerAvailable()){
+            try {
+                client = new Client(user, false, null, null);
+            } catch (IOException e) {
+                System.out.println("in signIn while creating a socket: " + e.getMessage());
+//                System.err.println("server is not responding");
+//                ClientRunner.setCachedRequests(user, new SignInQuery(user));
+//                Alert alert = new Alert(Alert.AlertType.WARNING, "server is not connected!!");
+//                alert.show();
+//                return;
+                return;
+            }
+        }else{
             System.err.println("server is not responding");
             ClientRunner.setCachedRequests(user, new SignInQuery(user));
             Alert alert = new Alert(Alert.AlertType.WARNING, "server is not connected!!");
@@ -73,6 +85,14 @@ public class FirstPageController implements SharedDataExchanger {
             client.setStatus(ClientState.closedSocket);
         }
 
+    }
+
+    private boolean isServerAvailable() {
+        try (Socket ignored = new Socket(serverIp, Integer.parseInt(serverPort))) {
+            return false;
+        } catch (IOException ignored) {
+            return true;
+        }
     }
 
     @Override

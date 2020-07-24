@@ -12,7 +12,7 @@ public class Client extends User {
     private transient ClientState status = ClientState.offline;
     private static int nThreads = 20;
     private static ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
-    private String serverIp = "172.20.174.125";
+    private String serverIp = "localhost";
     private String serverPort = "78";
     private transient Socket primarySocket;
     private transient Socket textSocket;
@@ -22,7 +22,8 @@ public class Client extends User {
     private transient ObjectInputStream input;
     private transient volatile ObjectOutputStream output;
 
-    public Client(String firstName, String lastName, String username, String password, boolean isConnected, String serverIp, String serverPort, String phone_id) throws IOException {
+    public Client(String firstName, String lastName, String username, String password, boolean isConnected,
+                  String serverIp, String serverPort, String phone_id) throws IOException {
         super(firstName, lastName, username, password, isConnected, phone_id);
         if(serverIp != null)
             this.serverIp = serverIp;
@@ -36,15 +37,19 @@ public class Client extends User {
 //			groupActiveChat = false;
 //			activeChatId = null;
     }
-    public Client(String serverIp, String serverPort, String username, String password, String phone_id) throws IOException {
-        this(null, null, username, password, false, serverIp, serverPort, phone_id);
+    public Client(String serverIp, String serverPort, String username, String password, String phone_id)
+            throws IOException {
+        this(null, null, username, password, false, serverIp, serverPort,
+                phone_id);
 
     }
     public Client(Client client) throws IOException {
-        this(client.firstName, client.lastName, client.username, client.password, client.isConnected, client.serverIp, client.serverPort, client.phone_id);
+        this(client.firstName, client.lastName, client.username, client.password, client.isConnected,
+                client.serverIp, client.serverPort, client.phone_id);
     }
     public Client(User user, boolean isConnected, String serverIp, String serverPort) throws IOException {
-        this(user.firstName, user.lastName, user.username, user.password, isConnected, serverIp, serverPort, user.phone_id);
+        this(user.firstName, user.lastName, user.username, user.password, isConnected, serverIp,
+                serverPort, user.phone_id);
     }
     public Client(Socket primarySocket){
         this.primarySocket = primarySocket;

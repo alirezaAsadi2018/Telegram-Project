@@ -1,6 +1,7 @@
 package com.telegram.controllers;
 
 import com.telegram.client.ClientRunner;
+import com.telegram.utility.Message;
 import com.telegram.utility.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
