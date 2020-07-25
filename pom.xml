@@ -7,8 +7,14 @@
     <groupId>com.telegram</groupId>
     <artifactId>Telegram</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <name>Telegram</name>
+
+    <modules>
+        <module>GUI</module>
+        <module>service</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,11 +22,9 @@
         <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
         <maven.compiler.release>11</maven.compiler.release>
         <junit.verswion>4.13</junit.verswion>
-        <jfoenix.version>9.0.10</jfoenix.version>
-        <javafx.version>15-ea+7</javafx.version>
         <typesafe.version>1.4.0</typesafe.version>
-        <apache.maven.plugins.version>3.8.1</apache.maven.plugins.version>
-        <javafx.maven.plugin.version>0.0.4</javafx.maven.plugin.version>
+        <apache.maven.compiler.plugin.version>3.8.1</apache.maven.compiler.plugin.version>
+        <exec.maven.plugin.version>3.0.0</exec.maven.plugin.version>
     </properties>
 
     <dependencies>
@@ -31,23 +35,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.jfoenix</groupId>
-            <artifactId>jfoenix</artifactId>
-            <version>${jfoenix.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
             <version>${typesafe.version}</version>
@@ -55,53 +42,34 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.fxml</include>
-                    <include>**/*.txt</include>
-                    <include>**/*.png</include>
-                    <include>**/*.jfif</include>
-                    <include>**/*.jpg</include>
-                </includes>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${apache.maven.plugins.version}</version>
-                <configuration>
-                    <release>${maven.compiler.release}</release>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>${javafx.maven.plugin.version}</version>
-                <configuration>
-                    <release>${maven.compiler.release}</release>
-<!--                    <options>-->
-<!--                        <option>&#45;&#45;add-opens</option>-->
-<!--                        <option>java.base/java.lang=com.telegram.controllers.Main</option>-->
-<!--                    </options>-->
-                    <mainClass>com.telegram.controllers.Main</mainClass>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <mainClass>com.telegram.controllers.Main</mainClass>
-                </configuration>
-            </plugin>
-        </plugins>
-
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${exec.maven.plugin.version}</version>
+<!--                important note: -->
+<!--                This part will add exec goal to the compile lifecycle-->
+<!--                so when compile lifecycle or any following lifecycle is run-->
+<!--                the mainclass of this module will be executed exactly after compilation -->
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <id>default-exec</id>-->
+<!--                            <phase>compile</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>java</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
+<!--                    </executions>-->
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${apache.maven.compiler.plugin.version}</version>
+                    <configuration>
+                        <release>${maven.compiler.release}</release>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.1.0</version>
@@ -109,10 +77,6 @@
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
