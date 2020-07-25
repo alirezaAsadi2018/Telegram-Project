@@ -225,6 +225,11 @@ class ClientChores implements Runnable {
         Query query;
         while (true) {
             try {
+                // socket is closed
+                if(client.getPrimarySocket() == null || client.getPrimarySocket().isClosed()
+                || primaryInput == null || primaryOutput == null){
+                    return;
+                }
                 queryObject = primaryInput.readObject();
                 if (queryObject == null) {
                     System.out.println("continued");
