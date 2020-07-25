@@ -17,8 +17,8 @@ import java.util.concurrent.Exchanger;
 
 
 public class FirstPageController implements SharedDataExchanger {
-    private String serverIp = "localhost";
-    private String serverPort = "78";
+    private final String serverIp = "localhost";
+    private final String serverPort = "78";
     @FXML
     private JFXButton registerPageBtn;
     @FXML
@@ -45,19 +45,10 @@ public class FirstPageController implements SharedDataExchanger {
         }
         User user = new User(null, null, username.getText(), password.getText(), false, numberId.getText());
         Client client;
-        if(isServerAvailable()){
-            try {
-                client = new Client(user, false, null, null);
-            } catch (IOException e) {
-                System.out.println("in signIn while creating a socket: " + e.getMessage());
-//                System.err.println("server is not responding");
-//                ClientRunner.setCachedRequests(user, new SignInQuery(user));
-//                Alert alert = new Alert(Alert.AlertType.WARNING, "server is not connected!!");
-//                alert.show();
-//                return;
-                return;
-            }
-        }else{
+        try {
+            client = new Client(user, false, null, null);
+        } catch (IOException e) {
+            System.out.println("in signIn while creating a socket: " + e.getMessage());
             System.err.println("server is not responding");
             ClientRunner.setCachedRequests(user, new SignInQuery(user));
             Alert alert = new Alert(Alert.AlertType.WARNING, "server is not connected!!");
@@ -96,14 +87,14 @@ public class FirstPageController implements SharedDataExchanger {
     }
 
     @Override
-    public void setData(Object... data) {
-//        if(data != null && data.length == 1)
-//            clientRunner = (ClientRunner)data[0];// sent from register page
+    public Object[] getData() {
+        return new Object[0];
     }
 
     @Override
-    public Object[] getData() {
-        return new Object[0];
+    public void setData(Object... data) {
+//        if(data != null && data.length == 1)
+//            clientRunner = (ClientRunner)data[0];// sent from register page
     }
 
     public void goToRegister(ActionEvent actionEvent) {
@@ -111,12 +102,14 @@ public class FirstPageController implements SharedDataExchanger {
 //        disableButton(firstPageBtn);
 //        enableButton(registerPageBtn);
     }
-    void disableButton(JFXButton btn){
+
+    void disableButton(JFXButton btn) {
         btn.setTextFill(Color.BLACK);
         btn.setOpacity(0.3);
         btn.setUnderline(false);
     }
-    void enableButton(JFXButton btn){
+
+    void enableButton(JFXButton btn) {
         btn.setTextFill(Color.valueOf("#0088CC"));
         btn.setOpacity(1);
         btn.setUnderline(true);
